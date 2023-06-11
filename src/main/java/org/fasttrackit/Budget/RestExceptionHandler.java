@@ -1,7 +1,7 @@
-package org.fasttrackit.Budget.Controller;
+package org.fasttrackit.Budget;
 
-import jakarta.persistence.Id;
-import org.fasttrackit.Budget.Exception.ResourceNotFoundException;
+
+import org.fasttrackit.Budget.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

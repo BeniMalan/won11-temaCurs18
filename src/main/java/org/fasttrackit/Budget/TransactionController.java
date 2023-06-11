@@ -1,34 +1,41 @@
-package org.fasttrackit.Budget.Controller;
+package org.fasttrackit.Budget;
 
 import lombok.RequiredArgsConstructor;
-import org.fasttrackit.Budget.Transaction;
-import org.fasttrackit.Budget.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/t")
+@RequestMapping("/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
-    @GetMapping("/transactions")
-    public List<Transaction> getAllTransactions() throws FileNotFoundException {
-       return transactionService.getAll ();
+
+    @GetMapping("/all")
+    public List<Transaction> getAllTransactions() {
+        return transactionService.getAll ();
     }
+
     @GetMapping("/{id}")
-    public Transaction getTranWithID(@PathVariable int id) throws FileNotFoundException {
-        return transactionService.getByID (id);
+    public Transaction getTransactionsWithID(@PathVariable int id) {
+        return transactionService.getByID ( id );
 
     }
+
     @DeleteMapping("/{id}")
-    public Transaction deleteTranwithID(@PathVariable int id) throws FileNotFoundException {
-       return transactionService.deleteByID ( id );
+    public Transaction deleteTransactionnWithID(@PathVariable int id) {
+        return transactionService.deleteByID ( id );
     }
-    @PostMapping
-    public Transaction addNewTransaction(@RequestBody Transaction transaction){
-           return transactionService.addTransaction ( transaction );
+
+    @PostMapping("/add")
+    public Transaction addNewTransaction(@RequestBody Transaction transaction) {
+        return transactionService.addTransaction ( transaction );
+    }
+
+    @PutMapping("{id}")
+    public Transaction replaceTransaction(@PathVariable int id, @RequestBody Transaction transaction) {
+        return transactionService.replaceTransaction ( id, transaction );
     }
 }

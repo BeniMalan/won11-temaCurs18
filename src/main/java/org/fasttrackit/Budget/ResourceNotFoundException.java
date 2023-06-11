@@ -1,4 +1,4 @@
-package org.fasttrackit.Budget.Exception;
+package org.fasttrackit.Budget;
 
 import lombok.Getter;
 

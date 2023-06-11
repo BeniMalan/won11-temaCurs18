@@ -1,4 +1,4 @@
-package org.fasttrackit.Budget.service;
+package org.fasttrackit.Budget;
 
 import org.fasttrackit.Budget.Transaction;
 import org.springframework.data.repository.CrudRepository;

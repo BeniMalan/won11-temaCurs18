@@ -1,4 +1,4 @@
-package org.fasttrackit.Budget.Controller;
+package org.fasttrackit.Budget;
 
 record ErrorResponse(String message, long entityId) {
 

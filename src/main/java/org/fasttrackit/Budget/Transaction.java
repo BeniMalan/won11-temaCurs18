@@ -1,4 +1,4 @@
-package org.fasttrackit.Budget.model;
+package org.fasttrackit.Budget;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Entity
 @AllArgsConstructor
 @Getter
-@EntityScan
+@Setter
+@NoArgsConstructor
+
 
 public class Transaction {
  @Id
@@ -22,4 +24,5 @@ private  String product;
 private  String type;
  @Column
 private  double amount;
+
 }

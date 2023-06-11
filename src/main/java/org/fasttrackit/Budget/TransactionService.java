@@ -1,13 +1,12 @@
-package org.fasttrackit.Budget.service;
+package org.fasttrackit.Budget;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.fasttrackit.Budget.Exception.ResourceNotFoundException;
-import org.fasttrackit.Budget.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -31,12 +30,14 @@ private final TransactionRepository transactionRepository;
         return StreamSupport.stream ( transactionRepository.findAll ().spliterator (),false ).toList ();
     }
     public Transaction getByID(int id)  {
-        return (Transaction) getAll ().stream ().filter ( transaction -> transaction.getId () == id ).findFirst ().orElseThrow (()-> new ResourceNotFoundException ("Tranzaction not found ",id) );
+        return getAll ().stream()
+                .filter(transaction-> transaction.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Not found", id));
     }
 
     public Transaction deleteByID(int id)  {
-        Transaction transaction = null;
-        transaction = getByID (id);
+       Transaction transaction = getByID (id);
         transactionRepository.delete ( transaction );
         return transaction;
     }
@@ -44,9 +45,15 @@ public Transaction addTransaction(Transaction transaction){
         transactionRepository.save ( transaction );
         return transaction;
     }
-    public Transaction replaceTransaction(Transaction transaction){
-        transactionRepository.findById ( getAll ().set ( 1,addTransaction ( transaction )).getId () );
-return transaction;
+    public Transaction replaceTransaction(int id, Transaction transaction) {
+        Transaction tr = getByID(id);
+        tr.setProduct(transaction.getProduct());
+        tr.setAmount(transaction.getAmount());
+        tr.setType(transaction.getType());
+        transactionRepository.save ( tr );
+        return transaction;
     }
 }
+
+
 
