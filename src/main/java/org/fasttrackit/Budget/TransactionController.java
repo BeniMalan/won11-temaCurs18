@@ -1,11 +1,12 @@
-package org.fasttrackit.Budget;
+package org.fasttrackit.Budget.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.fasttrackit.Budget.Transaction;
+import org.fasttrackit.Budget.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,17 +30,5 @@ public class TransactionController {
     @PostMapping
     public Transaction addNewTransaction(@RequestBody Transaction transaction){
            return transactionService.addTransaction ( transaction );
-    }
-    @PutMapping
-    public Transaction replaceTransaction(@RequestBody Transaction transaction){
-        return transactionService.replaceTransaction ( transaction );
-    }
-    @GetMapping("/r")
-    public Map<String,List<Transaction>> getReportBytype(){
-        return transactionService.report ();
-    }
-    @GetMapping("/r2")
-    public Map<String,List<Transaction>>getReportByProduct(){
-        return transactionService.report2 ();
     }
 }

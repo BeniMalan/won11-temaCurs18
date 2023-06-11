@@ -1,12 +1,25 @@
-package org.fasttrackit.Budget;
+package org.fasttrackit.Budget.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-@Data
+@Entity
+@AllArgsConstructor
+@Getter
+@EntityScan
 
 public class Transaction {
-private final int  id;
-private final String product;
-private final String type;
-private final double amount;
+ @Id
+ @GeneratedValue
+private  int  id;
+ @Column
+private  String product;
+ @Column
+private  String type;
+ @Column
+private  double amount;
 }

@@ -1,4 +1,4 @@
-package org.fasttrackit.Budget;
+package org.fasttrackit.Budget.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

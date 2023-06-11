@@ -1,56 +1,52 @@
-package org.fasttrackit.Budget;
+package org.fasttrackit.Budget.service;
 
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.fasttrackit.Budget.Exception.ResourceNotFoundException;
+import org.fasttrackit.Budget.Transaction;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.events.Event;
 
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionService {
 private final TransactionReader transactionReader;
-private final List<Transaction>transactionList=new ArrayList<> ();
+private final TransactionRepository transactionRepository;
 
-    public TransactionService(TransactionReader transactionReader) {
-        this.transactionReader = transactionReader;
-    }
     @PostConstruct
-    public void init() throws FileNotFoundException {
-        transactionList.addAll ( transactionReader.Reader ());
-        System.out.println (transactionList);
+    public void init()  {
+        List<Transaction>transactions= null;
+        try {
+            transactions = transactionReader.Reader ();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException ( e );
+        }
+        transactionRepository.saveAll ( transactions );
     }
 
-    public List<Transaction> getAll() throws FileNotFoundException {
-        return transactionList;
+    public List<Transaction> getAll()  {
+        return StreamSupport.stream ( transactionRepository.findAll ().spliterator (),false ).toList ();
+    }
+    public Transaction getByID(int id)  {
+        return (Transaction) getAll ().stream ().filter ( transaction -> transaction.getId () == id ).findFirst ().orElseThrow (()-> new ResourceNotFoundException ("Tranzaction not found ",id) );
     }
 
-    public Transaction getByID(int id) throws FileNotFoundException {
-        return (Transaction) getAll ().stream ()
-                .filter ( transaction -> transaction.getId ()==id).findFirst ().orElse ( null );
-    }
-    public Transaction deleteByID(int id) throws FileNotFoundException {
-        Transaction transaction = getByID (id);
-        transactionList.remove(transaction);
+    public Transaction deleteByID(int id)  {
+        Transaction transaction = null;
+        transaction = getByID (id);
+        transactionRepository.delete ( transaction );
         return transaction;
     }
 public Transaction addTransaction(Transaction transaction){
-        transactionList.add ( transaction );
+        transactionRepository.save ( transaction );
         return transaction;
     }
     public Transaction replaceTransaction(Transaction transaction){
-        transactionList.set ( 0,transaction );
-        return transaction;
-    }
-    public Map<String,List<Transaction>>report (){
-        Map<String,List<Transaction>> myreportBytype=transactionList.stream ().collect ( Collectors.groupingBy ( Transaction::getType) );
-         return myreportBytype;
-    }
-    public Map<String,List<Transaction>>report2(){
-        Map<String,List<Transaction>>myreportByProduct=transactionList.stream ().collect ( Collectors.groupingBy ( Transaction::getProduct ) );
-        return myreportByProduct;
+        transactionRepository.findById ( getAll ().set ( 1,addTransaction ( transaction )).getId () );
+return transaction;
     }
 }
 

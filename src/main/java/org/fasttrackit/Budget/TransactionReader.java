@@ -1,5 +1,6 @@
-package org.fasttrackit.Budget;
+package org.fasttrackit.Budget.service;
 
+import org.fasttrackit.Budget.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
